@@ -4,7 +4,9 @@ import type {
   Entorno,
   Envio,
   Evento,
+  InformeValidacion,
   Modo,
+  Prueba,
   ModoPermiso,
   ProgresoDescarga,
   ResumenConversacion,
@@ -48,6 +50,14 @@ export interface ApiTaller {
   mostrarArchivo(ruta: string): Promise<void>
   urlArchivo(ruta: string): string
 
+  /** Corre el validador; el avance llega por `alValidacion`. */
+  validar(modeloPreferido?: string): Promise<InformeValidacion>
+  detenerValidacion(): Promise<void>
+  copiarTexto(texto: string): Promise<void>
+  guardarInforme(texto: string): Promise<string>
+  abrirDatos(): Promise<void>
+
   alEvento(cb: (id: string, e: Evento) => void): () => void
   alDescarga(cb: (p: ProgresoDescarga) => void): () => void
+  alValidacion(cb: (pruebas: Prueba[]) => void): () => void
 }

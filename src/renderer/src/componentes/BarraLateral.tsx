@@ -1,6 +1,6 @@
 import type { Entorno, ResumenConversacion } from '@shared/tipos'
 import { agrupar } from '../util'
-import { Basura, Brujula, Capas, Engranaje, Mas } from './Iconos'
+import { Basura, Brujula, Capas, Engranaje, EscudoCheck, Mas } from './Iconos'
 import { Logo } from './Logo'
 
 export type Vista = 'chat' | 'modelos' | 'ajustes'
@@ -16,6 +16,7 @@ interface Props {
   onBorrar(id: string): void
   onVista(v: Vista): void
   onTutorial(): void
+  onValidar(): void
 }
 
 export function BarraLateral(p: Props) {
@@ -78,6 +79,9 @@ export function BarraLateral(p: Props) {
         </button>
         <button className={`enlace-lateral ${p.vista === 'ajustes' ? 'activa' : ''}`} onClick={() => p.onVista('ajustes')} data-tutorial="ajustes">
           <Engranaje /> Ajustes
+        </button>
+        <button className="enlace-lateral" onClick={p.onValidar} data-tutorial="validar">
+          <EscudoCheck /> Validar todo
         </button>
         <button className="enlace-lateral" onClick={p.onTutorial} data-tutorial="ayuda">
           <Brujula /> Tutorial

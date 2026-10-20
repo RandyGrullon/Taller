@@ -28,6 +28,12 @@ const api: ApiTaller = {
   mostrarArchivo: (ruta) => ipcRenderer.invoke('archivo:mostrar', ruta),
   urlArchivo: (ruta) => `taller://archivo/?ruta=${encodeURIComponent(ruta)}`,
 
+  validar: (modelo) => ipcRenderer.invoke('validador:correr', modelo),
+  detenerValidacion: () => ipcRenderer.invoke('validador:detener'),
+  copiarTexto: (texto) => ipcRenderer.invoke('validador:copiar', texto),
+  guardarInforme: (texto) => ipcRenderer.invoke('validador:guardar', texto),
+  abrirDatos: () => ipcRenderer.invoke('datos:abrir'),
+
   alEvento(cb) {
     const f = (_e: unknown, id: string, ev: Parameters<typeof cb>[1]) => cb(id, ev)
     ipcRenderer.on('conv:evento', f)
@@ -37,6 +43,11 @@ const api: ApiTaller = {
     const f = (_e: unknown, p: Parameters<typeof cb>[0]) => cb(p)
     ipcRenderer.on('descarga', f)
     return () => ipcRenderer.off('descarga', f)
+  },
+  alValidacion(cb) {
+    const f = (_e: unknown, p: Parameters<typeof cb>[0]) => cb(p)
+    ipcRenderer.on('validador:progreso', f)
+    return () => ipcRenderer.off('validador:progreso', f)
   }
 }
 

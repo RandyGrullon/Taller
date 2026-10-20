@@ -10,6 +10,7 @@ import { Logo } from './componentes/Logo'
 import { VistaItem } from './componentes/Items'
 import { SelectorModelo } from './componentes/SelectorModelo'
 import { Tutorial } from './componentes/Tutorial'
+import { Validador } from './componentes/Validador'
 import { Vacio } from './componentes/Vacio'
 import { VistaAjustes } from './componentes/VistaAjustes'
 import { VistaModelos } from './componentes/VistaModelos'
@@ -41,6 +42,7 @@ export default function App() {
   const [ocupadas, setOcupadas] = useState<Set<string>>(new Set())
   const [quieta, setQuieta] = useState(false)
   const [tutorial, setTutorial] = useState(false)
+  const [validador, setValidador] = useState(false)
   const transcripcion = useRef<HTMLDivElement>(null)
   const pegado = useRef(true)
 
@@ -258,6 +260,7 @@ export default function App() {
         }}
         onVista={setVista}
         onTutorial={abrirTutorial}
+        onValidar={() => setValidador(true)}
       />
       <main className="principal">
         {vista === 'modelos' && (
@@ -270,6 +273,7 @@ export default function App() {
               setVista('chat')
             }}
             onDetectar={() => void detectar()}
+            onValidar={() => setValidador(true)}
           />
         )}
         {vista === 'ajustes' && (
@@ -282,6 +286,7 @@ export default function App() {
               await detectar()
             }}
             onTutorial={abrirTutorial}
+            onValidar={() => setValidador(true)}
           />
         )}
         {vista === 'chat' && (
@@ -382,6 +387,15 @@ export default function App() {
         )}
       </main>
       {tutorial && vista === 'chat' && <Tutorial onCerrar={() => void cerrarTutorial()} onProbar={setTexto} />}
+      {validador && (
+        <Validador
+          modeloPreferido={actual.modelo}
+          onCerrar={() => {
+            setValidador(false)
+            void detectar()
+          }}
+        />
+      )}
     </div>
   )
 }

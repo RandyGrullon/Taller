@@ -1,7 +1,7 @@
-import { readFile } from 'node:fs/promises'
+import { mkdir, readFile, writeFile } from 'node:fs/promises'
 import { extname, join } from 'node:path'
 import { pathToFileURL } from 'node:url'
-import { app, BrowserWindow, dialog, ipcMain, nativeTheme, net, protocol, shell } from 'electron'
+import { app, BrowserWindow, clipboard, dialog, ipcMain, nativeTheme, net, protocol, shell } from 'electron'
 import type { Ajustes, Entorno, Envio, ProgresoDescarga, RespuestaPermiso } from '@shared/tipos'
 import type { CambiosConversacion } from '@shared/api'
 import { Almacen, ajustesPorDefecto } from './almacen'
@@ -10,6 +10,7 @@ import { abrirOllama, detectarHardware, detectarOllama } from './deteccion'
 import { GestorMcp } from './mcp'
 import { Ollama } from './ollama'
 import { GestorSesiones } from './sesiones'
+import { validar } from './validador'
 
 // Para pruebas: datos aparte y servidores simulados
 if (process.env.TALLER_DATOS) app.setPath('userData', process.env.TALLER_DATOS)
@@ -157,6 +158,52 @@ async function iniciar() {
       return null
     }
   })
+  // Validador
+  let validacion: AbortController | null = null
+  ipcMain.handle('validador:correr', async (_e, preferido?: string) => {
+    validacion?.abort()
+    const ctl = new AbortController()
+    validacion = ctl
+    entorno = null
+    try {
+      return await validar(preferido, {
+        ollama,
+        comfy,
+        ajustes,
+        version: app.getVersion(),
+        electron: process.versions.electron,
+        mcp: async () => {
+          await mcp.conectar(ajustes.mcpServers).catch(() => undefined)
+          return mcp.estado()
+        },
+        dirDatos: datos,
+        probarProtocolo: async (ruta) => {
+          const r = await net.fetch(`taller://archivo/?ruta=${encodeURIComponent(ruta)}`).catch(() => null)
+          return !!r?.ok && (await r.arrayBuffer()).byteLength > 0
+        },
+        signal: ctl.signal,
+        alCambiar: (p) => ventana?.webContents.send('validador:progreso', p)
+      })
+    } finally {
+      if (validacion === ctl) validacion = null
+    }
+  })
+  ipcMain.handle('validador:detener', () => validacion?.abort())
+  ipcMain.handle('validador:copiar', (_e, texto: string) => clipboard.writeText(texto))
+  ipcMain.handle('validador:guardar', async (_e, texto: string) => {
+    const dir = join(app.getPath('documents'), 'Taller')
+    await mkdir(dir, { recursive: true })
+    const ruta = join(dir, `validacion-${new Date().toISOString().slice(0, 16).replace(/[:T]/g, '-')}.md`)
+    await writeFile(ruta, texto, 'utf8')
+    shell.showItemInFolder(ruta)
+    return ruta
+  })
+  ipcMain.handle('datos:abrir', async () => {
+    const dir = join(datos, 'conversaciones')
+    await mkdir(dir, { recursive: true })
+    await shell.openPath(dir)
+  })
+
   ipcMain.handle('externo:abrir', (_e, url: string) => {
     if (/^https?:\/\//i.test(url)) return shell.openExternal(url)
   })

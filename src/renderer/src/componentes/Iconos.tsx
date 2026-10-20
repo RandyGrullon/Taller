@@ -193,6 +193,34 @@ export const Chispa = (p: P) => (
     <path d="M12 3v4M12 17v4M3 12h4M17 12h4M6 6l2.5 2.5M15.5 15.5 18 18M6 18l2.5-2.5M15.5 8.5 18 6" />
   </Base>
 )
+export const EscudoCheck = (p: P) => (
+  <Base {...p}>
+    <path d="M12 3 4.5 6v6c0 4.5 3.2 7.8 7.5 9 4.3-1.2 7.5-4.5 7.5-9V6z" />
+    <path d="m8.8 12.2 2.3 2.3 4.4-4.6" />
+  </Base>
+)
+export const Exclamacion = (p: P) => (
+  <Base {...p}>
+    <path d="M12 6v8M12 18h.01" />
+  </Base>
+)
+export const Menos = (p: P) => (
+  <Base {...p}>
+    <path d="M6 12h12" />
+  </Base>
+)
+export const Copiar = (p: P) => (
+  <Base {...p}>
+    <rect x="8" y="8" width="12" height="12" rx="2" />
+    <path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2" />
+  </Base>
+)
+export const Guardar = (p: P) => (
+  <Base {...p}>
+    <path d="M5 4h11l3 3v12a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1z" />
+    <path d="M8 4v5h7V4M8 20v-6h8v6" />
+  </Base>
+)
 export const Brujula = (p: P) => (
   <Base {...p}>
     <circle cx="12" cy="12" r="9" />

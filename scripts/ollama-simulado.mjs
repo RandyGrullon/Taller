@@ -65,6 +65,17 @@ function guion(cuerpo) {
   const llamada = (name, args) => ({ llamada: { function: { name, arguments: args } } })
   const tiene = (n) => herramientas.has(n)
 
+  // Pedidos del validador
+  if (/responde solo con la palabra: listo/i.test(p)) return { texto: 'listo' }
+  if (/17 × 23/.test(pedido)) return { texto: '391' }
+  if (/de qué color es esta imagen/i.test(p)) return { texto: msgs[ultimoUsuario]?.images?.length ? 'Rojo.' : 'No veo ninguna imagen.' }
+  if (tiene('sumar')) return paso === 0 ? llamada('sumar', { a: 1234, b: 4321 }) : { texto: `1234 + 4321 = ${resultados[0].content}` }
+  if (/prueba-taller\.txt/.test(p) && tiene('write_file')) {
+    if (paso === 0) return llamada('write_file', { path: 'prueba-taller.txt', content: 'hola desde Taller\n' })
+    if (paso === 1 && tiene('read_file')) return llamada('read_file', { path: 'prueba-taller.txt' })
+    return { texto: 'Listo: el archivo dice «hola desde Taller».' }
+  }
+
   if (herramientas.size) {
     if (/(crea|escribe|genera).*(archivo|script|programa)|hola mundo/.test(p) && tiene('write_file')) {
       const pasos = [
@@ -210,7 +221,15 @@ export function crearOllamaSimulado({ vacio = false, demora = 12 } = {}) {
         }
       }
       const prompt = Math.round(JSON.stringify(cuerpo.messages).length / 4)
-      linea({ message: { role: 'assistant', content: '' }, done: true, done_reason: 'stop', prompt_eval_count: prompt, eval_count: 40 })
+      linea({
+        message: { role: 'assistant', content: '' },
+        done: true,
+        done_reason: 'stop',
+        prompt_eval_count: prompt,
+        eval_count: 40,
+        eval_duration: 40 * 22e6,
+        load_duration: 1.4e9
+      })
       return res.end()
     }
     json(res, 404, { error: 'not found' })

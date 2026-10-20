@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import type { Ajustes, Entorno, ServidorMcp } from '@shared/tipos'
 import { api } from '../util'
-import { Brujula, Carpeta, Recargar } from './Iconos'
+import { Brujula, Carpeta, EscudoCheck, Recargar } from './Iconos'
 
 interface Props {
   ajustes: Ajustes
@@ -9,6 +9,7 @@ interface Props {
   carpetaActual?: string
   onGuardar(a: Ajustes): Promise<void>
   onTutorial(): void
+  onValidar(): void
 }
 
 const EJEMPLO_MCP = `{
@@ -18,7 +19,7 @@ const EJEMPLO_MCP = `{
   }
 }`
 
-export function VistaAjustes({ ajustes, entorno, carpetaActual, onGuardar, onTutorial }: Props) {
+export function VistaAjustes({ ajustes, entorno, carpetaActual, onGuardar, onTutorial, onValidar }: Props) {
   const [a, setA] = useState(ajustes)
   const [mcp, setMcp] = useState(() => (Object.keys(ajustes.mcpServers).length ? JSON.stringify(ajustes.mcpServers, null, 2) : ''))
   const [errorMcp, setErrorMcp] = useState('')
@@ -220,6 +221,14 @@ export function VistaAjustes({ ajustes, entorno, carpetaActual, onGuardar, onTut
             <span>
               <button className="boton" onClick={onTutorial}>
                 <Brujula tam={15} /> Ver el tutorial
+              </button>
+            </span>
+            <label>
+              Validador <span className="ayuda-c">Revisa todo en este equipo y arma un informe para compartir</span>
+            </label>
+            <span>
+              <button className="boton" onClick={onValidar}>
+                <EscudoCheck tam={15} /> Validar todo
               </button>
             </span>
           </div>

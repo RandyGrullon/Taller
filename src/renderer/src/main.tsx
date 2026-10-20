@@ -4,6 +4,7 @@ import App from './App'
 import './estilos.css'
 import './animaciones.css'
 import './tutorial.css'
+import './validador.css'
 
 createRoot(document.getElementById('raiz')!).render(
   <StrictMode>

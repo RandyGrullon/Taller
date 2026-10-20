@@ -37,6 +37,9 @@ export interface RespuestaChat {
   promptTokens: number
   evalTokens: number
   doneReason?: string
+  /** Tiempos que informa Ollama al terminar (nanosegundos). */
+  evalNs?: number
+  cargaNs?: number
 }
 
 export interface Pedazo {
@@ -142,6 +145,8 @@ export class Ollama {
         salida.promptTokens = linea.prompt_eval_count ?? 0
         salida.evalTokens = linea.eval_count ?? 0
         salida.doneReason = linea.done_reason
+        salida.evalNs = linea.eval_duration
+        salida.cargaNs = linea.load_duration
       }
     }
     return salida

@@ -26,6 +26,7 @@
   <a href="#-características">Características</a> ·
   <a href="#-empezar">Empezar</a> ·
   <a href="#-tutorial-guiado">Tutorial</a> ·
+  <a href="#-validador">Validador</a> ·
   <a href="#-el-agente">El agente</a> ·
   <a href="#-desarrollo">Desarrollo</a> ·
   <a href="#-preguntas-frecuentes">Preguntas</a>
@@ -70,6 +71,12 @@
     <td valign="top">
       <h3>🎓 Tutorial y animaciones</h3>
       Un recorrido guiado la primera vez y animaciones de carga, de generación y en toda la interfaz (respetan «reducir movimiento» del sistema).
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" valign="top">
+      <h3>🛡️ Validador de un clic</h3>
+      Un botón revisa Taller, Ollama, tus modelos y ComfyUI en tu equipo, sin preparar nada: elige solo el modelo para cada prueba, explica qué valida cada una y arma un informe para compartir.
     </td>
   </tr>
 </table>
@@ -129,6 +136,43 @@ La primera vez que abres Taller, un recorrido de un minuto ilumina cada parte de
   <img src="capturas/tutorial-1-bienvenida.png" width="49%" alt="Bienvenida del tutorial">
   <img src="capturas/tutorial-3-modos.png" width="49%" alt="El tutorial explica los cuatro modos">
 </p>
+
+## ✅ Validador
+
+**Validar todo** (en la barra lateral, en **Modelos** y en **Ajustes**) abre una ventana que revisa todo de una vez. No tienes que preparar nada:
+
+- Elige solo el modelo para cada prueba: el de tu conversación si sirve; si no, el más liviano que tenga lo necesario.
+- Trabaja en una carpeta temporal, sin tocar tus proyectos.
+- Si falta algo (Ollama, un modelo, ComfyUI), igual revisa lo demás y te dice qué falta y cómo resolverlo.
+- Al terminar: **Copiar informe** (Markdown, listo para pegar), **Guardar** (en `Documentos\Taller`) y **Conversaciones** (abre la carpeta, por si hay que mandarla).
+
+<p align="center">
+  <img src="capturas/18-validador-listo.png" width="80%" alt="El validador terminó: cada prueba con lo que valida, su resultado y su tiempo">
+</p>
+
+| Grupo | Prueba | Qué valida |
+|---|---|---|
+| Taller | Versión y sistema | Qué versión de Taller corre y en qué sistema, CPU y RAM |
+| Taller | Carpeta de datos | Que puede escribir y leer donde guarda ajustes y conversaciones |
+| Taller | Herramientas de archivos | Que el agente crea, lee, edita, lista y busca archivos (en una carpeta temporal) |
+| Taller | Terminal | Que el agente ejecuta comandos en PowerShell y que las tildes llegan bien |
+| Taller | Visor de imágenes y 3D | Que la ventana muestra lo que se genera (protocolo interno `taller://`) |
+| Taller | Tarjeta de video | Qué GPU NVIDIA tienes, su driver y su memoria |
+| Taller | Internet | Que llegas a ollama.com para descargar (sin internet, lo demás funciona) |
+| Ollama | Ollama corriendo | Que Ollama está instalado y responde; si no, dónde está o cómo bajarlo |
+| Ollama | Modelos y capacidades | Qué modelos tienes y qué sabe hacer cada uno según Ollama |
+| Modelos | Chat | Que un modelo responde en vivo; mide carga, primera palabra y tokens/s |
+| Modelos | Llamada a herramientas | Que el modelo pide `sumar(1234, 4321)` en el formato correcto y usa el resultado |
+| Modelos | Agente completo | Una tarea real con el bucle del Agente: crear un archivo y leerlo para confirmarlo |
+| Modelos | Razonamiento | Que Pensar separa el razonamiento y la respuesta (17 × 23 = 391) sale bien |
+| Modelos | Visión | Que el modelo ve imágenes: debe decir que un cuadro rojo es rojo |
+| Modelos | Búsqueda por significado | Que dos frases parecidas quedan más cerca entre sí que de una distinta |
+| Imágenes y 3D | ComfyUI | Que responde, qué GPU usa y si tiene checkpoint de imagen y Hunyuan3D |
+| Imágenes y 3D | Generar una imagen | Una imagen real de 768×768; mide el tiempo |
+| Imágenes y 3D | Generar un modelo 3D | Convierte esa imagen en 3D y revisa que el GLB sea válido |
+| Extras | Servidores MCP | Que tus servidores MCP arrancan y dan herramientas |
+
+Cada resultado es **Bien**, **Revisar** (funciona, pero con algo a mejorar), **Falla** u **Omitida** (con el motivo). Las pruebas con respuesta de un modelo se pueden abrir para ver exactamente qué contestó.
 
 ## 🧠 Modelos recomendados
 
@@ -253,12 +297,19 @@ El comportamiento del agente (herramientas, permisos, subagentes, MCP, compactac
 - [x] Agente con permisos, subagentes, MCP y compactación
 - [x] Imagen y 3D con ComfyUI
 - [x] Tutorial guiado y animaciones
+- [x] Validador de un clic con informe
 - [ ] Probar con Ollama y ComfyUI reales en GPU
 - [ ] Instalador firmado y actualizaciones automáticas
 - [ ] Probar en macOS y Linux
 - [ ] Texturas en los modelos 3D
 
 ## ❓ Preguntas frecuentes
+
+<details>
+<summary><b>¿Cómo sé si todo funciona en mi PC?</b></summary>
+<br>
+Toca <b>Validar todo</b>. En unos minutos revisa la app, Ollama, cada capacidad de tus modelos y ComfyUI, y te deja un informe para copiar.
+</details>
 
 <details>
 <summary><b>¿Necesito internet?</b></summary>
@@ -292,7 +343,7 @@ En la carpeta de datos de la app (<code>%APPDATA%\Taller</code> en Windows), en 
 
 ## ⚠️ Estado
 
-- Todo se probó con los simuladores de Ollama y ComfyUI; falta una pasada con los reales en una GPU.
+- Todo se probó con los simuladores de Ollama y ComfyUI; falta una pasada con los reales en una GPU. El **Validador** sirve justo para eso.
 - Probado en Windows 11. macOS y Linux deberían funcionar, pero no se han probado.
 
 ## 📄 Licencia

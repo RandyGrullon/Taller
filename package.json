@@ -1,7 +1,7 @@
 {
   "name": "taller",
   "productName": "Taller",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Agente de IA local para tu escritorio: chat, código, imágenes y 3D con los modelos que tengas en Ollama.",
   "author": "Randy Grullón",
   "license": "MIT",

@@ -67,6 +67,11 @@ const PASOS: Paso[] = [
     texto: 'Direcciones de Ollama y ComfyUI, tamaño del contexto, permisos por defecto, servidores MCP (como REA) y el tema.'
   },
   {
+    objetivo: 'validar',
+    titulo: 'Validar todo',
+    texto: 'Un clic revisa Taller, Ollama, tus modelos y ComfyUI en este equipo. Te dice qué funciona, qué falta y arma un informe para compartir.'
+  },
+  {
     titulo: '¡Listo para trabajar!',
     texto: 'Puedes repetir este recorrido cuando quieras desde «Tutorial», abajo a la izquierda.'
   }

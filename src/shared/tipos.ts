@@ -199,3 +199,27 @@ export interface ProgresoDescarga {
 }
 
 export type RespuestaPermiso = 'si' | 'siempre' | 'no'
+
+export type EstadoPrueba = 'pendiente' | 'corriendo' | 'ok' | 'aviso' | 'error' | 'omitida'
+
+/** Una comprobación del validador. */
+export interface Prueba {
+  id: string
+  grupo: string
+  nombre: string
+  /** Qué revisa y por qué importa, en palabras simples. */
+  queValida: string
+  estado: EstadoPrueba
+  detalle?: string
+  ms?: number
+  /** Lo que devolvió el modelo o el motor, para el informe. */
+  crudo?: string
+}
+
+export interface InformeValidacion {
+  fecha: string
+  pruebas: Prueba[]
+  markdown: string
+  /** Carpeta temporal con lo que generó la validación. */
+  carpeta: string
+}

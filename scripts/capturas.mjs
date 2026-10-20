@@ -12,13 +12,12 @@ const raiz = join(dirname(fileURLToPath(import.meta.url)), '..')
 const salida = join(raiz, 'capturas')
 const solo = process.argv.slice(2).find((a) => !a.startsWith('--'))
 
-const escuchar = (s, p) => new Promise((ok) => s.listen(p, '127.0.0.1', ok))
+// Puertos libres que elige el sistema, para no chocar con otro Ollama o ComfyUI
+const escuchar = (s) => new Promise((ok) => s.listen(0, '127.0.0.1', () => ok(`http://127.0.0.1:${s.address().port}`)))
 const ollama = crearOllamaSimulado({ demora: 18 })
 const ollamaVacio = crearOllamaSimulado({ vacio: true })
 const comfy = crearComfySimulado({ paso: 110 })
-await escuchar(ollama, 11500)
-await escuchar(ollamaVacio, 11501)
-await escuchar(comfy, 8190)
+const url = { ollama: await escuchar(ollama), vacio: await escuchar(ollamaVacio), comfy: await escuchar(comfy) }
 
 const datos = await mkdtemp(join(tmpdir(), 'taller-datos-'))
 const proyecto = await mkdtemp(join(tmpdir(), 'mi-proyecto-'))
@@ -33,7 +32,7 @@ const video = process.argv.includes('--video')
 const app = await electron.launch({
   args: [raiz],
   cwd: raiz,
-  env: { ...process.env, TALLER_DATOS: datos, TALLER_OLLAMA_URL: 'http://127.0.0.1:11500', TALLER_COMFY_URL: 'http://127.0.0.1:8190' },
+  env: { ...process.env, TALLER_DATOS: datos, TALLER_OLLAMA_URL: url.ollama, TALLER_COMFY_URL: url.comfy },
   ...(video ? { recordVideo: { dir: join(salida, 'video'), size: { width: 1320, height: 860 } } } : {})
 })
 const win = await app.firstWindow()
@@ -93,7 +92,9 @@ try {
   await siguiente(2)
   await foto('tutorial-5-modelos')
   await siguiente(2)
-  await foto('tutorial-6-listo')
+  await foto('tutorial-6-validar')
+  await siguiente()
+  await foto('tutorial-7-listo')
   await win.click('.tutorial-tarjeta .boton.primario')
   await win.waitForSelector('.tutorial', { state: 'detached' })
 
@@ -160,6 +161,20 @@ try {
   await win.click('.enlace-lateral:has-text("Ajustes")')
   await foto('11-ajustes')
 
+  // Validador: arranca solo al abrirlo
+  await win.click('.enlace-lateral:has-text("Validar todo")')
+  await win.waitForSelector('.prueba.corriendo')
+  // A media validación: ya pasó la parte de la app y va por los modelos
+  await win.waitForFunction(() => document.querySelectorAll('.prueba.ok').length >= 9, null, { timeout: 30000 })
+  await foto('17-validador-revisando')
+  await win.waitForSelector('.modal-pie .boton.primario:not([disabled])', { timeout: 60000 })
+  await win.click('.prueba:has-text("Llamada a herramientas") .prueba-fila')
+  await foto('18-validador-listo')
+  await win.click('.modal-pie .boton.primario')
+  await win.waitForSelector('text=Informe copiado')
+  await win.keyboard.press('Escape')
+  await win.waitForSelector('.modal-fondo', { state: 'detached' })
+
   await ajustar({ tema: 'oscuro' })
   await win.reload()
   await win.waitForSelector('.lateral')
@@ -174,7 +189,7 @@ try {
   await win.waitForSelector('.tarjeta h2')
   await foto('13-sin-ollama')
 
-  await ajustar({ ollamaUrl: 'http://127.0.0.1:11501' })
+  await ajustar({ ollamaUrl: url.vacio })
   await win.reload()
   await win.waitForSelector('text=no tiene modelos')
   await foto('14-sin-modelos')

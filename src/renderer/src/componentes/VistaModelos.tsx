@@ -3,7 +3,7 @@ import { CATALOGO, cabe } from '@shared/catalogo'
 import { disponibilidad, FUNCIONES, tiene } from '@shared/funciones'
 import type { Entorno, ProgresoDescarga } from '@shared/tipos'
 import { api, gb } from '../util'
-import { Basura, Candado, Check, Descargar, Equis, Externo, Recargar } from './Iconos'
+import { Basura, Candado, Check, Descargar, Equis, EscudoCheck, Externo, Recargar } from './Iconos'
 import { Insignias } from './Insignias'
 
 interface Props {
@@ -12,9 +12,10 @@ interface Props {
   descargas: Record<string, ProgresoDescarga>
   onUsar(nombre: string): void
   onDetectar(): void
+  onValidar(): void
 }
 
-export function VistaModelos({ entorno, modeloActual, descargas, onUsar, onDetectar }: Props) {
+export function VistaModelos({ entorno, modeloActual, descargas, onUsar, onDetectar, onValidar }: Props) {
   const [otro, setOtro] = useState('')
   const o = entorno.ollama
   const c = entorno.comfy
@@ -33,9 +34,14 @@ export function VistaModelos({ entorno, modeloActual, descargas, onUsar, onDetec
         <section>
           <div className="fila" style={{ justifyContent: 'space-between', marginBottom: 10 }}>
             <h2 style={{ margin: 0 }}>Motores</h2>
-            <button className="boton chico" onClick={onDetectar}>
-              <Recargar tam={14} /> Volver a detectar
-            </button>
+            <span className="fila">
+              <button className="boton chico" onClick={onDetectar}>
+                <Recargar tam={14} /> Volver a detectar
+              </button>
+              <button className="boton chico primario" onClick={onValidar}>
+                <EscudoCheck tam={14} /> Validar todo
+              </button>
+            </span>
           </div>
           <div className="rejilla-motores">
             <div className="motor">
