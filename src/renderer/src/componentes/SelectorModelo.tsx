@@ -35,7 +35,7 @@ export function SelectorModelo({ entorno, modelo, onElegir, onGestionar, onDetec
   const otros = entorno.ollama.modelos.filter((m) => !m.capacidades.includes('completion'))
 
   return (
-    <div className="selector" ref={ref}>
+    <div className="selector" ref={ref} data-tutorial="modelo">
       <button className="chip selector-boton" onClick={() => setAbierto(!abierto)} aria-expanded={abierto} title="Modelo de esta conversación">
         <span className="recorte">
           {actual ? <span className="nombre">{actual.nombre}</span> : <span>{entorno.ollama.modelos.length ? 'Elige un modelo' : 'Sin modelos'}</span>}

@@ -1,6 +1,6 @@
 import type { Entorno, ResumenConversacion } from '@shared/tipos'
 import { agrupar } from '../util'
-import { Basura, Capas, Engranaje, Mas } from './Iconos'
+import { Basura, Brujula, Capas, Engranaje, Mas } from './Iconos'
 import { Logo } from './Logo'
 
 export type Vista = 'chat' | 'modelos' | 'ajustes'
@@ -15,6 +15,7 @@ interface Props {
   onAbrir(id: string): void
   onBorrar(id: string): void
   onVista(v: Vista): void
+  onTutorial(): void
 }
 
 export function BarraLateral(p: Props) {
@@ -25,7 +26,7 @@ export function BarraLateral(p: Props) {
       <div className="marca">
         <Logo tam={28} /> Taller
       </div>
-      <button className="boton-nueva" onClick={p.onNueva}>
+      <button className="boton-nueva" onClick={p.onNueva} data-tutorial="nueva">
         <Mas /> Nueva conversación
       </button>
       <nav className="lista-conversaciones" aria-label="Conversaciones">
@@ -62,7 +63,7 @@ export function BarraLateral(p: Props) {
         {p.lista.length === 0 && <div className="grupo-titulo">Todavía no hay conversaciones</div>}
       </nav>
       <div className="pie-lateral">
-        <div className="motores">
+        <div className="motores" data-tutorial="motores">
           <span className="pildora" title={o?.error ?? o?.url}>
             <span className={`punto ${o?.estado === 'conectado' ? 'ok' : o?.estado === 'apagado' ? 'medio' : 'mal'}`} />
             Ollama{o?.estado === 'conectado' ? ` · ${o.modelos.length}` : ''}
@@ -72,11 +73,14 @@ export function BarraLateral(p: Props) {
             ComfyUI
           </span>
         </div>
-        <button className={`enlace-lateral ${p.vista === 'modelos' ? 'activa' : ''}`} onClick={() => p.onVista('modelos')}>
+        <button className={`enlace-lateral ${p.vista === 'modelos' ? 'activa' : ''}`} onClick={() => p.onVista('modelos')} data-tutorial="modelos">
           <Capas /> Modelos
         </button>
-        <button className={`enlace-lateral ${p.vista === 'ajustes' ? 'activa' : ''}`} onClick={() => p.onVista('ajustes')}>
+        <button className={`enlace-lateral ${p.vista === 'ajustes' ? 'activa' : ''}`} onClick={() => p.onVista('ajustes')} data-tutorial="ajustes">
           <Engranaje /> Ajustes
+        </button>
+        <button className="enlace-lateral" onClick={p.onTutorial} data-tutorial="ayuda">
+          <Brujula /> Tutorial
         </button>
       </div>
     </aside>

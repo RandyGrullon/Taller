@@ -124,6 +124,7 @@ export function Compositor(p: Props) {
       )}
       <div
         className={`compositor ${arrastrando ? 'arrastrando' : ''}`}
+        data-tutorial="compositor"
         onDragOver={(e) => {
           e.preventDefault()
           setArrastrando(true)
@@ -193,7 +194,7 @@ export function Compositor(p: Props) {
           </div>
         )}
 
-        <div className={`modos ${indicador ? 'con-indicador' : ''}`} role="tablist" aria-label="Modo">
+        <div className={`modos ${indicador ? 'con-indicador' : ''}`} role="tablist" aria-label="Modo" data-tutorial="modos">
           {indicador && <span className="indicador" style={indicador} />}
           {MODOS.map(({ id, nombre, Icono }) => {
             const d = disponibilidad(FUNCION_DE_MODO[id], p.modelo, p.entorno)

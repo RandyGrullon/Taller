@@ -14,7 +14,8 @@ export function ajustesPorDefecto(carpetaSalidas: string): Ajustes {
     carpetaSalidas,
     maxPasos: 40,
     mejorarPrompt: true,
-    mcpServers: {}
+    mcpServers: {},
+    tutorialVisto: false
   }
 }
 

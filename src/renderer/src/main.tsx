@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client'
 import App from './App'
 import './estilos.css'
 import './animaciones.css'
+import './tutorial.css'
 
 createRoot(document.getElementById('raiz')!).render(
   <StrictMode>

@@ -1,0 +1,146 @@
+/* Recorrido guiado */
+
+.tutorial {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  animation: aparecer-suave 0.35s ease both;
+}
+
+/* El hueco iluminado: una sombra enorme oscurece todo lo demás */
+.tutorial-foco {
+  position: fixed;
+  border-radius: 14px;
+  box-shadow:
+    0 0 0 9999px rgba(18, 12, 8, 0.62),
+    0 0 0 2px var(--acento),
+    0 0 26px 4px color-mix(in srgb, var(--acento) 45%, transparent);
+  transition:
+    top 0.45s cubic-bezier(0.3, 1.1, 0.4, 1),
+    left 0.45s cubic-bezier(0.3, 1.1, 0.4, 1),
+    width 0.45s cubic-bezier(0.3, 1.1, 0.4, 1),
+    height 0.45s cubic-bezier(0.3, 1.1, 0.4, 1),
+    box-shadow 0.3s ease;
+  pointer-events: none;
+  animation: foco-latido 2s ease-in-out infinite;
+}
+
+.tutorial-foco.sin-objetivo {
+  box-shadow: 0 0 0 9999px rgba(18, 12, 8, 0.62);
+  animation: none;
+}
+
+@keyframes foco-latido {
+  50% {
+    box-shadow:
+      0 0 0 9999px rgba(18, 12, 8, 0.62),
+      0 0 0 3px var(--acento),
+      0 0 38px 10px color-mix(in srgb, var(--acento) 35%, transparent);
+  }
+}
+
+.tutorial-tarjeta {
+  position: fixed;
+  width: 360px;
+  background: var(--superficie);
+  border: 1px solid var(--borde);
+  border-radius: 18px;
+  box-shadow: var(--sombra-flotante);
+  padding: 18px 20px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  animation: emerger 0.32s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.tutorial-tarjeta.centrada {
+  top: 50%;
+  left: 50%;
+  width: 440px;
+  transform: translate(-50%, -50%);
+  align-items: center;
+  text-align: center;
+  padding: 28px 28px 20px;
+  animation: emerger-centro 0.4s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+@keyframes emerger-centro {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -46%) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
+}
+
+.tutorial-tarjeta h2 {
+  margin: 0;
+  font-size: 17px;
+  letter-spacing: -0.01em;
+}
+
+.tutorial-tarjeta.centrada h2 {
+  font-size: 22px;
+}
+
+.tutorial-tarjeta p {
+  margin: 0;
+  color: var(--texto-2);
+  line-height: 1.55;
+}
+
+.tutorial-paso {
+  font-size: 11.5px;
+  font-weight: 650;
+  color: var(--acento);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.tutorial-puntos {
+  display: flex;
+  gap: 5px;
+  margin: 6px 0 2px;
+}
+
+.tutorial-puntos span {
+  width: 6px;
+  height: 6px;
+  border-radius: 6px;
+  background: var(--borde-fuerte);
+  transition:
+    width 0.3s ease,
+    background-color 0.3s ease;
+}
+
+.tutorial-puntos span.visto {
+  background: color-mix(in srgb, var(--acento) 45%, var(--borde-fuerte));
+}
+
+.tutorial-puntos span.activo {
+  width: 20px;
+  background: var(--acento);
+}
+
+.tutorial-acciones {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  margin-top: 6px;
+}
+
+.tutorial-saltar {
+  border: 0;
+  background: transparent;
+  color: var(--texto-3);
+  padding: 6px 4px;
+  font-size: 13px;
+}
+
+.tutorial-saltar:hover {
+  color: var(--texto);
+  text-decoration: underline;
+}

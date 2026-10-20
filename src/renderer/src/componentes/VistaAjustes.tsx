@@ -1,13 +1,14 @@
 import { useEffect, useState } from 'react'
 import type { Ajustes, Entorno, ServidorMcp } from '@shared/tipos'
 import { api } from '../util'
-import { Carpeta, Recargar } from './Iconos'
+import { Brujula, Carpeta, Recargar } from './Iconos'
 
 interface Props {
   ajustes: Ajustes
   entorno: Entorno
   carpetaActual?: string
   onGuardar(a: Ajustes): Promise<void>
+  onTutorial(): void
 }
 
 const EJEMPLO_MCP = `{
@@ -17,7 +18,7 @@ const EJEMPLO_MCP = `{
   }
 }`
 
-export function VistaAjustes({ ajustes, entorno, carpetaActual, onGuardar }: Props) {
+export function VistaAjustes({ ajustes, entorno, carpetaActual, onGuardar, onTutorial }: Props) {
   const [a, setA] = useState(ajustes)
   const [mcp, setMcp] = useState(() => (Object.keys(ajustes.mcpServers).length ? JSON.stringify(ajustes.mcpServers, null, 2) : ''))
   const [errorMcp, setErrorMcp] = useState('')
@@ -213,6 +214,14 @@ export function VistaAjustes({ ajustes, entorno, carpetaActual, onGuardar }: Pro
               <option value="claro">Claro</option>
               <option value="oscuro">Oscuro</option>
             </select>
+            <label>
+              Recorrido guiado <span className="ayuda-c">Te muestra dónde está cada cosa en un minuto</span>
+            </label>
+            <span>
+              <button className="boton" onClick={onTutorial}>
+                <Brujula tam={15} /> Ver el tutorial
+              </button>
+            </span>
           </div>
         </section>
 

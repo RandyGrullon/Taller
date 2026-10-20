@@ -75,6 +75,28 @@ try {
   await win.waitForSelector('.lateral')
   await ajustar({ carpetaSalidas: proyecto })
   await win.reload()
+
+  // La primera vez sale el recorrido guiado
+  const siguiente = async (veces = 1) => {
+    for (let n = 0; n < veces; n++) await win.click('.tutorial-tarjeta .boton.primario')
+    await espera(450)
+  }
+  await win.waitForSelector('.tutorial-tarjeta')
+  await espera(900)
+  await foto('tutorial-1-bienvenida')
+  await siguiente(2)
+  await foto('tutorial-2-modelo')
+  await siguiente()
+  await foto('tutorial-3-modos')
+  await siguiente(3)
+  await foto('tutorial-4-compositor')
+  await siguiente(2)
+  await foto('tutorial-5-modelos')
+  await siguiente(2)
+  await foto('tutorial-6-listo')
+  await win.click('.tutorial-tarjeta .boton.primario')
+  await win.waitForSelector('.tutorial', { state: 'detached' })
+
   await win.waitForSelector('text=¿Qué hacemos hoy?')
   await foto('01-inicio')
 

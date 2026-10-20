@@ -90,6 +90,8 @@ export interface Ajustes {
   /** En Imágenes y 3D, el modelo de chat reescribe la idea como prompt en inglés. */
   mejorarPrompt: boolean
   mcpServers: Record<string, ServidorMcp>
+  /** El recorrido guiado se muestra solo la primera vez. */
+  tutorialVisto: boolean
 }
 
 export interface Archivo {

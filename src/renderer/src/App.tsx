@@ -9,6 +9,7 @@ import { Carpeta } from './componentes/Iconos'
 import { Logo } from './componentes/Logo'
 import { VistaItem } from './componentes/Items'
 import { SelectorModelo } from './componentes/SelectorModelo'
+import { Tutorial } from './componentes/Tutorial'
 import { Vacio } from './componentes/Vacio'
 import { VistaAjustes } from './componentes/VistaAjustes'
 import { VistaModelos } from './componentes/VistaModelos'
@@ -39,6 +40,7 @@ export default function App() {
   const [texto, setTexto] = useState('')
   const [ocupadas, setOcupadas] = useState<Set<string>>(new Set())
   const [quieta, setQuieta] = useState(false)
+  const [tutorial, setTutorial] = useState(false)
   const transcripcion = useRef<HTMLDivElement>(null)
   const pegado = useRef(true)
 
@@ -58,6 +60,7 @@ export default function App() {
       setAjustes(a)
       setEntorno(e)
       setLista(l)
+      setTutorial(!a.tutorialVisto)
       const modelo = modeloInicial(e, a.modeloPorDefecto)
       setBorrador({
         modelo,
@@ -189,6 +192,16 @@ export default function App() {
     setTimeout(() => setQuieta(false), 500)
   }
 
+  const abrirTutorial = () => {
+    setVista('chat')
+    setTutorial(true)
+  }
+
+  const cerrarTutorial = async () => {
+    setTutorial(false)
+    if (ajustes && !ajustes.tutorialVisto) setAjustes(await api.guardarAjustes({ ...ajustes, tutorialVisto: true }))
+  }
+
   const nueva = () => {
     setVista('chat')
     setBorrador((b) => ({ ...b, carpeta: conv?.carpeta ?? b.carpeta, modelo: conv?.modelo ?? b.modelo, modo: conv?.modo ?? b.modo }))
@@ -244,6 +257,7 @@ export default function App() {
           void recargarLista()
         }}
         onVista={setVista}
+        onTutorial={abrirTutorial}
       />
       <main className="principal">
         {vista === 'modelos' && (
@@ -267,6 +281,7 @@ export default function App() {
               setAjustes(await api.guardarAjustes(a))
               await detectar()
             }}
+            onTutorial={abrirTutorial}
           />
         )}
         {vista === 'chat' && (
@@ -275,6 +290,7 @@ export default function App() {
               <span className="titulo-conv">{actual.titulo}</span>
               <button
                 className="chip"
+                data-tutorial="carpeta"
                 title={actual.carpeta ?? `Sin carpeta: el agente trabaja en ${ajustes.carpetaSalidas}`}
                 onClick={async () => {
                   const c = await api.elegirCarpeta()
@@ -287,6 +303,7 @@ export default function App() {
               {actual.modo === 'agente' && (
                 <select
                   className="chip"
+                  data-tutorial="permisos"
                   value={actual.permisos}
                   title={PERMISOS.find((p) => p.id === actual.permisos)?.ayuda}
                   onChange={(e) => void cambiar({ permisos: e.target.value as ModoPermiso })}
@@ -364,6 +381,7 @@ export default function App() {
           </>
         )}
       </main>
+      {tutorial && vista === 'chat' && <Tutorial onCerrar={() => void cerrarTutorial()} onProbar={setTexto} />}
     </div>
   )
 }
