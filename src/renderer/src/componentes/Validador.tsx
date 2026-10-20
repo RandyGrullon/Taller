@@ -174,8 +174,12 @@ export function Validador({ modeloPreferido, onCerrar }: Props) {
           <div className="resumen-validacion" aria-live="polite">
             <span className="cifra ok">{cuenta('ok')} bien</span>
             <span className="cifra aviso">{cuenta('aviso')} para revisar</span>
-            <span className="cifra error">{cuenta('error')} fallas</span>
-            <span className="cifra omitida">{cuenta('omitida')} omitidas</span>
+            <span className="cifra error">
+              {cuenta('error')} {cuenta('error') === 1 ? 'falla' : 'fallas'}
+            </span>
+            <span className="cifra omitida">
+              {cuenta('omitida')} {cuenta('omitida') === 1 ? 'omitida' : 'omitidas'}
+            </span>
           </div>
           <span className="espaciador" />
           {mensaje && <span className="mensaje-guardado">{mensaje}</span>}

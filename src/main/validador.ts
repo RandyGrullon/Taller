@@ -528,7 +528,7 @@ export function informe(pruebas: Prueba[], fecha: string, d: Pick<DepsValidador,
     '',
     `- **Fecha:** ${fecha.replace('T', ' ').slice(0, 16)} (UTC)`,
     `- **Versión:** Taller ${d.version}`,
-    `- **Resultado:** ${cuenta('ok')} bien · ${cuenta('aviso')} para revisar · ${cuenta('error')} fallas · ${cuenta('omitida')} omitidas`,
+    `- **Resultado:** ${cuenta('ok')} bien · ${cuenta('aviso')} para revisar · ${cuenta('error')} ${cuenta('error') === 1 ? 'falla' : 'fallas'} · ${cuenta('omitida')} ${cuenta('omitida') === 1 ? 'omitida' : 'omitidas'}`,
     ''
   ]
   let grupo = ''
