@@ -1,0 +1,22 @@
+appId: com.grullonb.taller
+productName: Taller
+directories:
+  output: release
+  buildResources: build
+files:
+  - out/**
+  - package.json
+  - build/icon.png
+win:
+  target: nsis
+  icon: build/icon.png
+nsis:
+  oneClick: false
+  allowToChangeInstallationDirectory: true
+  artifactName: Taller-${version}-instalador.${ext}
+mac:
+  target: dmg
+  category: public.app-category.developer-tools
+linux:
+  target: AppImage
+  category: Development
